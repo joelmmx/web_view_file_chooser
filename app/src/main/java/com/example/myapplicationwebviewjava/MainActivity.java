@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl(url);
 
-        final MyJavaScriptInterface myJavaScriptInterface
-                = new MyJavaScriptInterface(this);
-        webView.addJavascriptInterface(myJavaScriptInterface, "AndroidFunction");
+//        final MyJavaScriptInterface myJavaScriptInterface
+//                = new MyJavaScriptInterface(this);
+//        webView.addJavascriptInterface(myJavaScriptInterface, "AndroidFunction");
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class MyJavaScriptInterface {
+   /* public class MyJavaScriptInterface {
         Context mContext;
 
         MyJavaScriptInterface(Context c) {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             myDialog.setPositiveButton("ON", null);
             myDialog.show();
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
