@@ -71,17 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
-            // For Android 3.0+
-            public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
-                mUploadMessage = uploadMsg;
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.addCategory(Intent.CATEGORY_OPENABLE);
-                i.setType("*/*");
-                startActivityForResult(
-                        Intent.createChooser(i, "File Browser"),
-                        FILECHOOSER_RESULTCODE);
-            }
-
         });
 
         webView.loadUrl(url);
