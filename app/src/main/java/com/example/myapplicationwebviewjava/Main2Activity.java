@@ -18,6 +18,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         String msg = getIntent().getStringExtra(EXTRA);
+        msg = msg.replaceFirst("Texto obtenido de la imagen:","");
         Log.d(TAG, "msg "+msg);
         TextView textView = findViewById(R.id.text_view_2);
         textView.setText(msg);
