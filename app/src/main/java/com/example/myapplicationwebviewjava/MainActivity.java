@@ -77,16 +77,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view,
                                                        WebResourceRequest request) {
-                webView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "run: ");
-//                                    webView.loadUrl(
-//                                            "javascript:this.document.location.href = 'source://' + encodeURI(document.documentElement.outerHTML);");
-                        webView.loadUrl("javascript:console.log('MAGIC'+document.getElementsByTagName('html')[0].innerHTML);");
-
-                    }
-                });
                 String url = request.getUrl().toString();
                 if (urlShouldBeHandledByWebView(url)) {
                     return super.shouldInterceptRequest(view, request);
@@ -127,6 +117,23 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             // success case
                             Log.d(TAG, "onResponse "+url+": "+response.body().string());
+                            webView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "run: ");
+//                                    webView.loadUrl(
+//                                            "javascript:this.document.location.href = 'source://' + encodeURI(document.documentElement.outerHTML);");
+//                        webView.loadUrl("javascript:console.log('MAGIC'+document.getElementsByTagName('html')[0].innerHTML);");
+//                                    webView.loadUrl("javascript:console.log(document.getElementById('base64').value);");
+//                                    try {
+//                                        Thread.sleep(3000);
+//                                    } catch (InterruptedException e) {
+//                                        e.printStackTrace();
+//                                    }
+                                    webView.loadUrl("javascript:console.log(document.getElementById('demo').textContent);");
+
+                                }
+                            });
                         }
                     });
 
@@ -179,14 +186,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onConsoleMessage(ConsoleMessage cmsg)
             {
-                // check secret prefix
-                if (cmsg.message().startsWith("MAGIC"))
-                {
-                    String msg = cmsg.message().substring(5); // strip off prefix
-                    Log.d(TAG, "onConsoleMessage: msg: "+msg);
-                    return true;
-                }
+                if(cmsg.message().contains("Cargando")) {
+                    webView.post(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Log.d(TAG, "run: ");
+                            webView.loadUrl("javascript:console.log(document.getElementById('demo').textContent);");
 
+                        }
+                    });
+                }else{
+                    Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
+                }
                 return false;
             }
 
