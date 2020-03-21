@@ -3,6 +3,7 @@ package com.example.myapplicationwebviewjava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import okhttp3.Call;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -54,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setAllowFileAccess(true);
     }
-
     public void setListeners() {
         // TODO Auto-generated method stub
 
@@ -74,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view,
                                                        WebResourceRequest request) {
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "run: ");
+//                                    webView.loadUrl(
+//                                            "javascript:this.document.location.href = 'source://' + encodeURI(document.documentElement.outerHTML);");
+                        webView.loadUrl("javascript:console.log('MAGIC'+document.getElementsByTagName('html')[0].innerHTML);");
+
+                    }
+                });
                 String url = request.getUrl().toString();
                 if (urlShouldBeHandledByWebView(url)) {
                     return super.shouldInterceptRequest(view, request);
@@ -87,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 if(url.contains("ine/ajax-loader.gif")){
                     return false;
                 }
-                return false;
+                return true;
             }
 
             @NonNull
@@ -117,37 +130,34 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-//                    final Call call = client.newCall(new Request.Builder()
-//                            .url(url)
-//                            .build()
-//                    );
-//                    final Response response = call.execute();
-//                    final Call call = client.newCall(request);
-                   /* final Response response = call.execute();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = response.body().byteStream().read(buffer)) > -1 ) {
-                        for(int i=0;i<buffer.length;i++){
-                            Log.d(TAG, "handleRequestViaOkHttp: (char)buffer[i]: "+(char)buffer[i]);
-                        }
-                        baos.write(buffer, 0, len);
-                    }
-                    baos.flush();
-
-                    return new WebResourceResponse(
-                            response.header("content-type", "text/plain"), // You can set something other as default content-type
-                            response.header("content-encoding", "utf-8"),  // Again, you can set another encoding as default
-                            new ByteArrayInputStream(baos.toByteArray())
-                    );*/
-//                   Thread.sleep(10000);
                     return null;
                 } catch (Exception e) {
+                    Log.e(TAG,"ERROR: "+e.getMessage());
                     e.printStackTrace();
                     return null;
                 }
             }
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                /* This call inject JavaScript into the page which just finished loading. */
+                Log.d(TAG, "onPageFinished: url: "+url);
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("source://")) {
+                    try {
+                        String html = URLDecoder.decode(url, "UTF-8").substring(9);
+                        Log.d(TAG, "shouldOverrideUrlLoading: "+html);
+
+                    } catch (UnsupportedEncodingException e) {
+                        Log.e("example", "failed to decode source", e);
+                    }
+                }
+                // For all other links, let the WebView do it's normal thing
+                return false;
+            }
+
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -166,14 +176,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
                 return true;
             }
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage cmsg)
+            {
+                // check secret prefix
+                if (cmsg.message().startsWith("MAGIC"))
+                {
+                    String msg = cmsg.message().substring(5); // strip off prefix
+                    Log.d(TAG, "onConsoleMessage: msg: "+msg);
+                    return true;
+                }
+
+                return false;
+            }
 
         });
 
         webView.loadUrl(url);
 
-//        final MyJavaScriptInterface myJavaScriptInterface
-//                = new MyJavaScriptInterface(this);
-//        webView.addJavascriptInterface(myJavaScriptInterface, "AndroidFunction");
     }
 
     @Override
