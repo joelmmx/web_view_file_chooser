@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">INE WebView</string>
+    <string name="text_view_2_activity">Segunda Actividad</string>
 </resources>

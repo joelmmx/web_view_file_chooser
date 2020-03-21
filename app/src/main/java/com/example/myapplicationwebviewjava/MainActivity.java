@@ -117,10 +117,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             // success case
                             Log.d(TAG, "onResponse "+url+": "+response.body().string());
-                            webView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d(TAG, "run: ");
+                            if(url.contains("ine/ajax-loader.gif")){
+                                webView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d(TAG, "run: ");
 //                                    webView.loadUrl(
 //                                            "javascript:this.document.location.href = 'source://' + encodeURI(document.documentElement.outerHTML);");
 //                        webView.loadUrl("javascript:console.log('MAGIC'+document.getElementsByTagName('html')[0].innerHTML);");
@@ -130,10 +131,11 @@ public class MainActivity extends AppCompatActivity {
 //                                    } catch (InterruptedException e) {
 //                                        e.printStackTrace();
 //                                    }
-                                    webView.loadUrl("javascript:console.log(document.getElementById('demo').textContent);");
+                                        webView.loadUrl("javascript:console.log(document.getElementById('demo').textContent);");
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     });
 
@@ -197,6 +199,10 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }else{
                     Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
+                    if(cmsg.message().contains("Texto obtenido de la imagen")){
+                        startActivity(Main2Activity.newIntent(getApplicationContext(),cmsg.message()));
+                    }
+
                 }
                 return false;
             }
