@@ -1,5 +1,6 @@
 package com.example.myapplicationwebviewjava;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -7,13 +8,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import okhttp3.Call;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,14 +58,97 @@ public class MainActivity extends AppCompatActivity {
     public void setListeners() {
         // TODO Auto-generated method stub
 
-//        webView.setWebViewClient(new WebViewClient() {
-//            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//
-//                webView.loadUrl("about:blank");
-//
-//                view.clearHistory();
-//            }
-//        });
+        webView.setWebViewClient(new WebViewClient() {
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                webView.loadUrl("about:blank");
+
+                view.clearHistory();
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Log.d(TAG,"shouldOverrideUrlLoading: request.getUrl(): "+ request.getUrl());
+                return false;
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view,
+                                                       WebResourceRequest request) {
+                String url = request.getUrl().toString();
+                if (urlShouldBeHandledByWebView(url)) {
+                    return super.shouldInterceptRequest(view, request);
+                }
+
+                return handleRequestViaOkHttp(url);
+            }
+
+            private boolean urlShouldBeHandledByWebView(String url) {
+                Log.d(TAG,"intercepting req....!!!: "+ url);
+                if(url.contains("ine/ajax-loader.gif")){
+                    return false;
+                }
+                return false;
+            }
+
+            @NonNull
+            private WebResourceResponse handleRequestViaOkHttp(@NonNull final String url)  {
+                try {
+                    Log.d(TAG, "handleRequestViaOkHttp: url:"+url);
+                    // On Android API >= 21 you can get request method and headers
+                    // As I said, we need to only display "simple" page with resources
+                    // So it's GET without special headers
+                    OkHttpClient client = new OkHttpClient();
+
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .build();
+                    final Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            // failure case
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            // success case
+                            Log.d(TAG, "onResponse "+url+": "+response.body().string());
+                        }
+                    });
+
+//                    final Call call = client.newCall(new Request.Builder()
+//                            .url(url)
+//                            .build()
+//                    );
+//                    final Response response = call.execute();
+//                    final Call call = client.newCall(request);
+                   /* final Response response = call.execute();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = response.body().byteStream().read(buffer)) > -1 ) {
+                        for(int i=0;i<buffer.length;i++){
+                            Log.d(TAG, "handleRequestViaOkHttp: (char)buffer[i]: "+(char)buffer[i]);
+                        }
+                        baos.write(buffer, 0, len);
+                    }
+                    baos.flush();
+
+                    return new WebResourceResponse(
+                            response.header("content-type", "text/plain"), // You can set something other as default content-type
+                            response.header("content-encoding", "utf-8"),  // Again, you can set another encoding as default
+                            new ByteArrayInputStream(baos.toByteArray())
+                    );*/
+//                   Thread.sleep(10000);
+                    return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
