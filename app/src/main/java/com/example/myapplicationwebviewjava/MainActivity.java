@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             private boolean urlShouldBeHandledByWebView(String url) {
                 Log.d(TAG,"intercepting req....!!!: "+ url);
-                if(url.contains("ine/ajax-loader.gif")||url.contains("vision.googleapis.com")){
+                if(url.contains("vision.googleapis.com")){
                     return false;
                 }
                 return true;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             // success case
                             Log.d(TAG, "onResponse "+url+": "+response.body().string());
-                            if(url.contains("ine/ajax-loader.gif")||url.contains("vision.googleapis.com")){
+                            if(url.contains("vision.googleapis.com")){
                                 webView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -202,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
                     if(cmsg.message().contains("Texto obtenido de la imagen")){
-                        startSecondActivity(cmsg);
+//                        startSecondActivity(cmsg);
+                        startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
                     }
 
                 }
@@ -215,20 +216,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    boolean wasStarted;
-    public synchronized void startSecondActivity(ConsoleMessage cmsg){
-        Log.d(TAG, "startSecondActivity() called with: cmsg = [" + cmsg + "]");
-        if(!wasStarted) {
-            startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
-            wasStarted = true;
-        }
-    }
+//    boolean wasStarted;
+//    public synchronized void startSecondActivity(ConsoleMessage cmsg){
+//        Log.d(TAG, "startSecondActivity() called with: cmsg = [" + cmsg + "]");
+//        if(!wasStarted) {
+//            startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
+//            wasStarted = true;
+//        }
+//    }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        wasStarted = false;
-    }
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        wasStarted = false;
+//    }
 
     @Override
     public void onBackPressed() {
