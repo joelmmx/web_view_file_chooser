@@ -2,8 +2,10 @@ package com.example.myapplicationwebviewjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -134,5 +136,23 @@ public class Main2Activity extends AppCompatActivity {
     public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
         T[] arr = new Gson().fromJson(s, clazz);
         return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+    }
+
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+
+        List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+        Log.d(TAG, "onBackPressed() called: "+taskList.get(0).topActivity.getClassName());
+        Log.d(TAG, "onBackPressed() called: "+taskList.get(1).topActivity.getClassName());
+
+        if(taskList.get(0).numActivities == 1 &&
+                taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
+            Log.i(TAG, "This is last activity in the stack");
+        }
+
+
     }
 }

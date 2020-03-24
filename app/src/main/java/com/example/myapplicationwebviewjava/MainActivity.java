@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import okhttp3.Call;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public void initFields() {
         // TODO Auto-generated method stub
 
-        webView = (WebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setAllowFileAccess(true);
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             private boolean urlShouldBeHandledByWebView(String url) {
                 Log.d(TAG,"intercepting req....!!!: "+ url);
-                if(url.contains("ine/ajax-loader.gif")){
+                if(url.contains("ine/ajax-loader.gif")||url.contains("vision.googleapis.com")){
                     return false;
                 }
                 return true;
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             // success case
                             Log.d(TAG, "onResponse "+url+": "+response.body().string());
-                            if(url.contains("ine/ajax-loader.gif")){
+                            if(url.contains("ine/ajax-loader.gif")||url.contains("vision.googleapis.com")){
                                 webView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onConsoleMessage(ConsoleMessage cmsg)
             {
+                Log.d(TAG, "onConsoleMessage: ");
                 if(cmsg.message().contains("Cargando")) {
                     webView.post(new Runnable() {
                         @Override
@@ -200,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
                     if(cmsg.message().contains("Texto obtenido de la imagen")){
-                        startActivity(Main2Activity.newIntent(getApplicationContext(),cmsg.message(),"9"));
+                        startSecondActivity(cmsg);
                     }
 
                 }
@@ -213,10 +215,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    boolean wasStarted;
+    public synchronized void startSecondActivity(ConsoleMessage cmsg){
+        Log.d(TAG, "startSecondActivity() called with: cmsg = [" + cmsg + "]");
+        if(!wasStarted) {
+            startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
+            wasStarted = true;
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        wasStarted = false;
+    }
+
     @Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
-
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed() called: "+isTaskRoot());
         if (webView.canGoBack() == true) {
             webView.goBack();
         } else {
@@ -224,6 +242,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        Log.d(TAG, "onResume() called");
+//        if(fromChooserActivity){
+//            fromChooserActivity = false;
+//        }else{
+//            setListeners();
+//        }
+//    }
 
    /* public class MyJavaScriptInterface {
         Context mContext;
@@ -249,19 +277,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
+//   boolean fromChooserActivity;
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], intent = [" + intent + "]");
         if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == mUploadMessage) return;
             Uri result = intent == null || resultCode != RESULT_OK ? null
                     : intent.getData();
             Uri[] uris = new Uri[1];
             uris[0] = result;
-            Log.d(TAG, "onActivityResult: result: "+result);
             mUploadMessage.onReceiveValue(uris);
             mUploadMessage = null;
+//            fromChooserActivity = true;
         }
     }
 }
