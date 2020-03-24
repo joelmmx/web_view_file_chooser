@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -38,9 +39,9 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//
+//        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main2);
         String direccion = getIntent().getStringExtra(EXTRA_ADDRESS);
         Log.d(TAG, "onCreate() direccion sin procesar: "+direccion);
@@ -48,15 +49,9 @@ public class Main2Activity extends AppCompatActivity {
         Log.d(TAG, "onCreate() direccion procesada: "+direccion);
         TextView textView = findViewById(R.id.text_view_2);
         textView.setText(direccion);
+        new ConnectionTask().execute(direccion);
 
-        try {
-            callService("http://192.168.0.14:8089/Geolocalizar/dce/BuscarDomicilio",
-                    direccion,
-                    getIntent().getStringExtra(EXTRA_ENTIDAD)).
-                    forEach(ubicacion -> Log.d(TAG, "onCreate() ubicacion: "+ubicacion));
-        }catch (Exception e ){
-            e.printStackTrace();
-        }
+
     }
 
 //    private String processAddress(String direccion) {
@@ -138,21 +133,37 @@ public class Main2Activity extends AppCompatActivity {
         return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
     }
 
-    @Override
-    public void onBackPressed() {
-        // TODO Auto-generated method stub
-        super.onBackPressed();
-        ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+//    @Override
+//    public void onBackPressed() {
+//        // TODO Auto-generated method stub
+//        super.onBackPressed();
+//        ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+//
+//        List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+//        Log.d(TAG, "onBackPressed() called: "+taskList.get(0).topActivity.getClassName());
+//        Log.d(TAG, "onBackPressed() called: "+taskList.get(1).topActivity.getClassName());
+//
+//        if(taskList.get(0).numActivities == 1 &&
+//                taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
+//            Log.i(TAG, "This is last activity in the stack");
+//        }
+//
+//
+//    }
 
-        List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
-        Log.d(TAG, "onBackPressed() called: "+taskList.get(0).topActivity.getClassName());
-        Log.d(TAG, "onBackPressed() called: "+taskList.get(1).topActivity.getClassName());
+    private class ConnectionTask extends AsyncTask<String,Void,Void>{
 
-        if(taskList.get(0).numActivities == 1 &&
-                taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
-            Log.i(TAG, "This is last activity in the stack");
+        @Override
+        protected Void doInBackground(String... args) {
+            try {
+                callService("http://192.168.0.14:8089/Geolocalizar/dce/BuscarDomicilio",
+                        args[0],
+                        getIntent().getStringExtra(EXTRA_ENTIDAD)).
+                        forEach(ubicacion -> Log.d(TAG, "onCreate() ubicacion: "+ubicacion));
+            }catch (Exception e ){
+                e.printStackTrace();
+            }
+            return null;
         }
-
-
     }
 }
