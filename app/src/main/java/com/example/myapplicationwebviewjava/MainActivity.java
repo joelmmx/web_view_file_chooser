@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
                     if(cmsg.message().contains("Texto obtenido de la imagen")){
-                        startActivity(Main2Activity.newIntent(getApplicationContext(),cmsg.message()));
+                        startActivity(Main2Activity.newIntent(getApplicationContext(),cmsg.message(),"9"));
                     }
 
                 }
