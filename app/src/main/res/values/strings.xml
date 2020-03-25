@@ -2,4 +2,16 @@
     <string name="app_name">INE WebView</string>
     <string name="text_view_2_activity">Segunda Actividad</string>
     <string name="text_view_3_activity">Ubicaciones obtenidas:</string>
+    <string name="label_geoloc">Geoloc:</string>
+    <string name="label_colonia">Colonia:</string>
+    <string name="label_calle">Calle:</string>
+    <string name="label_numero">Numero:</string>
+    <string name="label_cp">Codigo Postal:</string>
+    <string name="label_edificio">Edificio:</string>
+    <string name="label_entrada">Entrada:</string>
+    <string name="label_localidad">Localidad:</string>
+    <string name="label_edmslm">Edmslm:</string>
+    <string name="label_longitud">Longitud:</string>
+    <string name="label_latitud">Latitud:</string>
+    <string name="label_entidad">Entidad:</string>
 </resources>

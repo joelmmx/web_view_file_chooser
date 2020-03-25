@@ -1,15 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".MapaActivity">
+
     <TextView
-        android:id="@+id/text_view_3"
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_geoloc"
+        android:text="@string/label_geoloc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
+    <TextView
+        android:id="@+id/mapa_geoloc_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_geoloc"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_colonia"
+        android:text="@string/label_colonia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_geoloc_text_view"/>
+    <TextView
+        android:id="@+id/mapa_colonia_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_colonia"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_calle"
+        android:text="@string/label_calle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_colonia_text_view"/>
+    <TextView
+        android:id="@+id/mapa_calle_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_calle"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_numero"
+        android:text="@string/label_numero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_calle_text_view"/>
+    <TextView
+        android:id="@+id/mapa_numero_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_numero"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_cp"
+        android:text="@string/label_cp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_numero_text_view"/>
+    <TextView
+        android:id="@+id/mapa_cp_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_cp"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_edificio"
+        android:text="@string/label_edificio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_cp_text_view"/>
+    <TextView
+        android:id="@+id/mapa_edificio_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_edificio"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_entrada"
+        android:text="@string/label_entrada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_edificio_text_view"/>
+    <TextView
+        android:id="@+id/mapa_entrada_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_entrada"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_localidad"
+        android:text="@string/label_localidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_entrada_text_view"/>
+    <TextView
+        android:id="@+id/mapa_localidad_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_localidad"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_edmslm"
+        android:text="@string/label_edmslm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_localidad_text_view"/>
+    <TextView
+        android:id="@+id/mapa_edmslm_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_edmslm"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_longitud"
+        android:text="@string/label_longitud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_edmslm_text_view"/>
+    <TextView
+        android:id="@+id/mapa_longitud_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_longitud"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_latitud"
+        android:text="@string/label_latitud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_longitud_text_view"/>
+    <TextView
+        android:id="@+id/mapa_latitud_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_latitud"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/label_entidad"
+        android:text="@string/label_entidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapa_latitud_text_view"/>
+    <TextView
+        android:id="@+id/mapa_entidad_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_entidad"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

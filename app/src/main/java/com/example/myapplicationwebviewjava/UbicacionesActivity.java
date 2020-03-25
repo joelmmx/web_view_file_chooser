@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -191,8 +192,7 @@ public class UbicacionesActivity extends AppCompatActivity {
         @NonNull
         @Override
         public UbicacionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            TextView textView = new TextView(getApplicationContext());
-            return new UbicacionHolder(textView);
+            return new UbicacionHolder(LayoutInflater.from(getApplicationContext()).inflate(R.layout.ubicacion_holder,parent,false));
         }
 
         @Override
@@ -210,18 +210,21 @@ public class UbicacionesActivity extends AppCompatActivity {
 
     private class UbicacionHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView mTitleUbicacion;
+        private TextView mCalleTextView;
+        private TextView mColoniaTextView;
         private Ubicacion mUbicacion;
 
-        public UbicacionHolder(@NonNull View itemView) {
-            super(itemView);
-            mTitleUbicacion = (TextView) itemView;
-            itemView.setOnClickListener(this);
+        public UbicacionHolder(@NonNull View ubicacionView) {
+            super(ubicacionView);
+            mCalleTextView   = ubicacionView.findViewById(R.id.text_view_calle);
+            mColoniaTextView = ubicacionView.findViewById(R.id.text_view_colonia);
+            ubicacionView.setOnClickListener(this);
         }
 
         public void bindUbicacion(Ubicacion ubicacion){
             Log.d(TAG, "bindUbicacion() called with: ubicacion = [" + ubicacion + "]");
-            mTitleUbicacion.setText(ubicacion.getCalle());
+            mCalleTextView.setText(ubicacion.getCalle());
+            mColoniaTextView.setText(ubicacion.getColonia());
             mUbicacion = ubicacion;
         }
 
