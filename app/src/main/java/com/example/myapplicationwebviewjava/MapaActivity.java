@@ -1,9 +1,12 @@
 package com.example.myapplicationwebviewjava;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,11 +73,27 @@ public class MapaActivity extends AppCompatActivity {
             }
         });
 
+        changeActionBarColor();
+
     }
 
     public static Intent newIntent(Context context, Ubicacion ubicacion){
         Intent intent = new Intent(context, MapaActivity.class);
         intent.putExtra(EXTRA_UBICACION,new Gson().toJson(ubicacion));
         return intent;
+    }
+
+    public void changeActionBarColor(){
+        // Define ActionBar object
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor("#FF69B4"));
+
+        // Set BackgroundDrawable
+        actionBar.setBackgroundDrawable(colorDrawable);
     }
 }

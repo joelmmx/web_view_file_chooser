@@ -1,12 +1,15 @@
 package com.example.myapplicationwebviewjava;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +53,7 @@ public class UbicacionesActivity extends AppCompatActivity {
         recyclerUbicaciones = findViewById(R.id.list_ubicaciones);
         recyclerUbicaciones.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         new ConnectionTask().execute(direccion);
+        changeActionBarColor();
 
 
     }
@@ -234,5 +238,19 @@ public class UbicacionesActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext() , mUbicacion.getCalle() + " clicked!" , Toast.LENGTH_SHORT).show();
             startActivity(MapaActivity.newIntent(getApplicationContext() , mUbicacion));
         }
+    }
+
+    public void changeActionBarColor(){
+        // Define ActionBar object
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor("#FF69B4"));
+
+        // Set BackgroundDrawable
+        actionBar.setBackgroundDrawable(colorDrawable);
     }
 }

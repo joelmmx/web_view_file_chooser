@@ -1,10 +1,11 @@
 package com.example.myapplicationwebviewjava;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initFields();
         setListeners();
+        changeActionBarColor();
+    }
+
+    public void changeActionBarColor(){
+        // Define ActionBar object
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor("#FF69B4"));
+
+        // Set BackgroundDrawable
+        actionBar.setBackgroundDrawable(colorDrawable);
     }
 
     public void initFields() {

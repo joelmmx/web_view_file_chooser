@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">INE WebView</string>
+    <string name="app_name">INE Mapa</string>
     <string name="text_view_2_activity">Segunda Actividad</string>
-    <string name="text_view_3_activity">Ubicaciones obtenidas:</string>
+    <string name="text_view_3_activity">Escoja su ubicacion:</string>
     <string name="label_geoloc">Geoloc:</string>
     <string name="label_colonia">Colonia:</string>
     <string name="label_calle">Calle:</string>
