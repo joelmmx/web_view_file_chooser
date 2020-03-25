@@ -231,7 +231,7 @@ public class UbicacionesActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.d(TAG, "onClick() called with: v = [" + mUbicacion.getCalle() + " clicked!" + "]");
-            Toast.makeText(getApplicationContext() , mUbicacion.getCalle() + " clicked!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext() , mUbicacion.getCalle() + " clicked!" , Toast.LENGTH_SHORT).show();
             startActivity(MapaActivity.newIntent(getApplicationContext() , mUbicacion));
         }
     }
