@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main2Activity">
+    tools:context=".UbicacionesActivity">
     <TextView
         android:textStyle="bold"
         android:textSize="25dp"
@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:text="@string/text_view_3_activity"/>
     <View style="@style/Divider.Horizontal"/>
-    <ScrollView
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_ubicaciones"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/text_view_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_view_2_activity"/>
-    </ScrollView>
+        android:layout_height="match_parent"/>
+
+<!--    </ScrollView>-->
 
 </LinearLayout>

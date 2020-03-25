@@ -1,25 +1,22 @@
 package com.example.myapplicationwebviewjava;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,11 +27,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class Main2Activity extends AppCompatActivity {
+public class UbicacionesActivity extends AppCompatActivity {
 
     public static final String EXTRA_ADDRESS = "com.example.myapplicationwebviewjava.address";
     public static final String EXTRA_ENTIDAD = "com.example.myapplicationwebviewjava.entidad";
-    private static final String TAG = "Main2Activity";
+    private static final String TAG = "UbicacionesActivity";
+    private RecyclerView recyclerUbicaciones;
+    private List<Ubicacion> mUbicaciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +41,20 @@ public class Main2Activity extends AppCompatActivity {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //
 //        StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.ubicacion_list);
         String direccion = getIntent().getStringExtra(EXTRA_ADDRESS);
         Log.d(TAG, "onCreate() direccion sin procesar: "+direccion);
         direccion = processAddress(direccion);
         Log.d(TAG, "onCreate() direccion procesada: "+direccion);
-        TextView textView = findViewById(R.id.text_view_2);
-        textView.setText(direccion);
+        recyclerUbicaciones = findViewById(R.id.list_ubicaciones);
+        recyclerUbicaciones.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         new ConnectionTask().execute(direccion);
 
 
+    }
+
+    public void setupAdapter(){
+        recyclerUbicaciones.setAdapter(new UbicacionesAdapter(mUbicaciones));
     }
 
 //    private String processAddress(String direccion) {
@@ -106,7 +109,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public static Intent newIntent(Context context, String addres, String entidad){
-        Intent intent = new Intent(context,Main2Activity.class);
+        Intent intent = new Intent(context, UbicacionesActivity.class);
         intent.putExtra(EXTRA_ADDRESS,addres);
         intent.putExtra(EXTRA_ENTIDAD,entidad);
         return intent;
@@ -168,7 +171,65 @@ public class Main2Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Ubicacion> ubicaciones){
+            if(ubicaciones==null){
+                ubicaciones = new ArrayList<>();
+            }
             ubicaciones.forEach(ubicacion -> Log.d(TAG, "onCreate() ubicacion: "+ubicacion));
+            mUbicaciones = ubicaciones;
+            setupAdapter();
+        }
+    }
+
+    private class UbicacionesAdapter extends RecyclerView.Adapter<UbicacionHolder> {
+
+        private List<Ubicacion> mUbicaciones;
+
+        public UbicacionesAdapter(List<Ubicacion> ubicaciones) {
+            mUbicaciones = ubicaciones;
+        }
+
+        @NonNull
+        @Override
+        public UbicacionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            TextView textView = new TextView(getApplicationContext());
+            return new UbicacionHolder(textView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull UbicacionHolder holder, int position) {
+            holder.bindUbicacion(mUbicaciones.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mUbicaciones.size();
+        }
+
+
+    }
+
+    private class UbicacionHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private TextView mTitleUbicacion;
+        private Ubicacion mUbicacion;
+
+        public UbicacionHolder(@NonNull View itemView) {
+            super(itemView);
+            mTitleUbicacion = (TextView) itemView;
+            itemView.setOnClickListener(this);
+        }
+
+        public void bindUbicacion(Ubicacion ubicacion){
+            Log.d(TAG, "bindUbicacion() called with: ubicacion = [" + ubicacion + "]");
+            mTitleUbicacion.setText(ubicacion.getCalle());
+            mUbicacion = ubicacion;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "onClick() called with: v = [" + mUbicacion.getCalle() + " clicked!" + "]");
+            Toast.makeText(getApplicationContext() , mUbicacion.getCalle() + " clicked!" , Toast.LENGTH_LONG).show();
+            startActivity(MapaActivity.newIntent(getApplicationContext() , mUbicacion));
         }
     }
 }

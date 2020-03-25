@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">INE WebView</string>
     <string name="text_view_2_activity">Segunda Actividad</string>
-    <string name="text_view_3_activity">Direccion Obtenida:</string>
+    <string name="text_view_3_activity">Ubicaciones obtenidas:</string>
 </resources>

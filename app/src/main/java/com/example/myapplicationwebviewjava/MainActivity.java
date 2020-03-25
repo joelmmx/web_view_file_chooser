@@ -3,27 +3,19 @@ package com.example.myapplicationwebviewjava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import okhttp3.Call;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.webkit.ConsoleMessage;
-import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -203,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onConsoleMessage: msg: "+cmsg.message());
                     if(cmsg.message().contains("Texto obtenido de la imagen")){
 //                        startSecondActivity(cmsg);
-                        startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
+                        startActivity(UbicacionesActivity.newIntent(getApplicationContext(), cmsg.message(), "9"));
                     }
 
                 }
@@ -220,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
 //    public synchronized void startSecondActivity(ConsoleMessage cmsg){
 //        Log.d(TAG, "startSecondActivity() called with: cmsg = [" + cmsg + "]");
 //        if(!wasStarted) {
-//            startActivity(Main2Activity.newIntent(getApplicationContext(), cmsg.message(), "9"));
+//            startActivity(UbicacionesActivity.newIntent(getApplicationContext(), cmsg.message(), "9"));
 //            wasStarted = true;
 //        }
 //    }
