@@ -151,19 +151,24 @@ public class Main2Activity extends AppCompatActivity {
 //
 //    }
 
-    private class ConnectionTask extends AsyncTask<String,Void,Void>{
+    private class ConnectionTask extends AsyncTask<String,Void,List<Ubicacion>>{
 
         @Override
-        protected Void doInBackground(String... args) {
+        protected List<Ubicacion> doInBackground(String... args) {
             try {
-                callService("http://192.168.0.14:8089/Geolocalizar/dce/BuscarDomicilio",
+                List<Ubicacion> ubicaciones = callService("http://192.168.0.14:8089/Geolocalizar/dce/BuscarDomicilio",
                         args[0],
-                        getIntent().getStringExtra(EXTRA_ENTIDAD)).
-                        forEach(ubicacion -> Log.d(TAG, "onCreate() ubicacion: "+ubicacion));
+                        getIntent().getStringExtra(EXTRA_ENTIDAD));
+                        return ubicaciones;
             }catch (Exception e ){
                 e.printStackTrace();
+                return null;
             }
-            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Ubicacion> ubicaciones){
+            ubicaciones.forEach(ubicacion -> Log.d(TAG, "onCreate() ubicacion: "+ubicacion));
         }
     }
 }
