@@ -164,7 +164,7 @@ public class UbicacionesActivity extends AppCompatActivity {
         @Override
         protected List<Ubicacion> doInBackground(String... args) {
             try {
-                List<Ubicacion> ubicaciones = callService("http://192.168.0.14:8089/Geolocalizar/dce/BuscarDomicilio",
+                List<Ubicacion> ubicaciones = callService("http://3.224.241.39:8089/Geolocalizar/dce/BuscarDomicilio",
                         args[0],
                         getIntent().getStringExtra(EXTRA_ENTIDAD));
                         return ubicaciones;
