@@ -20,7 +20,7 @@ public class MapaWebViewActivity extends AppCompatActivity {
     public static final String EXTRA_UBICACION = "com.example.myapplicationwebviewjava.ubicacionwebview";
     private static final String TAG = "MapaWebViewActivity";
     private WebView mapWebView;
-    private String base_url="http://3.224.241.39:8088/Ubicar/dce/GenerarMapa";
+    private String base_url="http://3.224.241.39:8089/Ubicar/dce/GenerarMapa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
